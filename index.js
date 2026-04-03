@@ -31,7 +31,7 @@ app.post('/send-ticket', async (req, res) => {
     });
 
     await resend.emails.send({
-      from: 'onboarding@resend.dev',
+      from: 'noreply@bellavitaeventi.it',
       to: booking.userEmail,
       subject: `🎟️ Prenotazione confermata — ${booking.eventTitle}`,
       html: `
