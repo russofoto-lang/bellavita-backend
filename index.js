@@ -17,6 +17,27 @@ const resend = new Resend('re_dwJgxc7x_Fbp1yE1YWxGh4K9xKgHUm7n1');
 
 app.get('/', (req, res) => res.json({ status: 'Bella Vita Backend OK' }));
 
+// WhatsApp notification via CallMeBot
+async function sendWhatsAppNotification(booking) {
+  try {
+    const phone = '393929722655'; // tuo numero con prefisso internazionale senza +
+    const apikey = '2447639';
+    const text = encodeURIComponent(
+      `🎟️ NUOVA PRENOTAZIONE\n` +
+      `👤 ${booking.userName}\n` +
+      `🎭 ${booking.eventTitle}\n` +
+      `💺 ${booking.quantity} posto/i · €${booking.totalAmount.toFixed(2)}\n` +
+      `📞 ${booking.userPhone || 'N/D'}\n` +
+      `📧 ${booking.userEmail}`
+    );
+    const url = `https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${text}&apikey=${apikey}`;
+    const res = await fetch(url);
+    console.log('WhatsApp notifica inviata, status:', res.status);
+  } catch (e) {
+    console.error('Errore WhatsApp notifica:', e.message);
+  }
+}
+
 app.post('/send-ticket', async (req, res) => {
   const { booking } = req.body;
   console.log('Ricevuta richiesta per:', booking?.userEmail);
@@ -94,6 +115,8 @@ app.post('/send-ticket', async (req, res) => {
     });
 
     console.log('Email inviata con successo a:', booking.userEmail);
+    // Notifica WhatsApp admin
+    await sendWhatsAppNotification(booking);
     res.json({ success: true });
   } catch (error) {
     console.error('Errore:', error);
