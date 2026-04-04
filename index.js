@@ -20,7 +20,7 @@ app.get('/', (req, res) => res.json({ status: 'Bella Vita Backend OK' }));
 // WhatsApp notification via CallMeBot
 async function sendWhatsAppNotification(booking) {
   try {
-    const phone = '393929722655'; // tuo numero con prefisso internazionale senza +
+    const phone = '393929722656'; // tuo numero con prefisso internazionale senza +
     const apikey = '2447639';
     const text = encodeURIComponent(
       `🎟️ NUOVA PRENOTAZIONE\n` +
